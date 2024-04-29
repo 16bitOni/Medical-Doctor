@@ -1,0 +1,178 @@
+/* public/styles.css */
+
+/* Resetting margin and padding for the whole page */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif; /* Use a smooth text font */
+}
+
+/* Header styles */
+header {
+    background-color: transparent; /* Make header transparent */
+    padding: 20px; /* Increase padding for better spacing */
+    position: relative; /* Use position relative for positioning child elements */
+}
+
+.header-left {
+    font-size: 1.5rem;
+    color: #130202; /* Set text color */
+    padding-right: 20px; /* Add padding to the right */
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    position: absolute; /* Position buttons absolutely */
+    top: 50%; /* Align buttons vertically in the middle */
+    right: 40px; /* Align buttons to the right with some extra space */
+    transform: translateY(-50%); /* Adjust vertical alignment */
+}
+
+.header-right button {
+    margin-left: 10px;
+    background-color: transparent;
+    color: #000000; /* Set text color to white */
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+/* Main content styles */
+main {
+    padding: 20px;
+    height: calc(100% - 64px); /* 64px is the height of the header */
+    display: flex;
+    justify-content: flex-start; /* Align content to the left */
+    align-items: left;
+    flex-direction: row;
+}
+
+
+/* Button styles */
+button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+/* Container styles */
+/* Container styles */
+.container {
+    max-width: 600px;
+    background-color: #fff; /* White background */
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding:40px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 30px; /* Increase margin on the left side */
+    max-height: 200px;
+}
+
+
+.container h1 {
+    text-align: center;
+    color: #007bff; /* Blue heading */
+    margin-bottom: 20px;
+}
+
+.container form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.container label {
+    font-weight: bold;
+    color: #555; /* Dark gray label */
+    font-size: 18px;
+}
+
+.container input[type="text"] {
+    width: 100%;
+    padding: 12px 20px;
+    border: 1px solid #ced4da; /* Light gray border */
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.2s ease;
+}
+
+.container input[type="text"]:focus {
+    outline: none;
+    border-color: #007bff; /* Blue border on focus */
+}
+
+.container button[type="submit"] {
+    padding: 12px 30px;
+    background-color: #007bff; /* Blue button color */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.container button[type="submit"]:hover {
+    background-color: #0056b3; /* Darker blue hover effect */
+}
+
+.container .result-container {
+    width: 100%;
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f0f0f0; /* Light gray background */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.container .result-container h2 {
+    color: #007bff; /* Blue heading */
+    margin-bottom: 10px;
+}
+
+.container .result-container ul {
+    list-style: none;
+    padding: 0;
+}
+
+.container .result-container li {
+    margin-bottom: 5px;
+}
+
+.container .no-result {
+    color: #dc3545; /* Red text for no result */
+}
+
+.container .wave-divider {
+    width: 100%;
+    height: 50px;
+    background-repeat: repeat-x;
+    background-size: auto 100%;
+    background-position: bottom;
+    margin-bottom: 30px;
+}
+
+
+/* Footer styles */
+footer {
+    padding: 10px 20px;
+    background-color: #f8f9fa; /* Light gray background color */
+    color: #343a40; /* Dark gray text color */
+    text-align: center;
+}
+
+/* Background SVG */
+body {
+    background-image: url('doctor.svg');
+    background-size: auto 100%; /* Set background size to cover height and auto width */
+    background-repeat: no-repeat; /* Prevent SVG from repeating */
+    background-position: right top; /* Position SVG to the left */
+    background-attachment: fixed; /* Ensure SVG stays fixed while scrolling */
+}

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Medicine Search</title>
+    <link rel="icon" href="https://img.icons8.com/doodle/48/internet--v1.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>
+        header {
+            background-color: #26a69a; /* Teal color */
+            padding: 10px 0;
+        }
+        header span {
+            color: #ffffff; /* White color */
+            font-size: 24px;
+            font-weight: bold;
+            margin-left: 20px;
+        }
+        .header-right {
+            float: right;
+            margin-right: 20px;
+        }
+        .underline-hover {
+            text-decoration: none;
+            color: #ffffff; /* White color */
+        }
+        .underline-hover:hover {
+            background-color: #00796b; /* Darker teal color on hover */
+        }
+        body {
+    background-image: url('doctor.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center top; /* Positioning the background image at the bottom */
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    color: #333; /* Text color */
+}
+        main {
+            padding: 20px;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9); /* White background with transparency */
+            border-radius: 10px;
+            padding: 20px;
+        }
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background for footer */
+            color: #fff; /* White text color */
+        }
+        .wave-divider {
+            border-bottom: 1px solid #ccc; /* Gray wave divider */
+            margin: 20px 0;
+        }
+        .no-result {
+            font-style: italic;
+        }
+        .btn {
+            background-color: #26a69a; /* Teal color */
+            color: #fff; /* White text color */
+        }
+        .btn:hover {
+            background-color: #009688; /* Darker teal color on hover */
+        }
+
+        .result-container ul li {
+            font-weight: bold; /* Making the list items bold */
+            margin-bottom: 5px; /* Adding some space between list items */
+        }
+        .result-container h2 {
+            color: green; /* Changing the color of the headings under search result to green */
+        }
+        .result-container ul li:before {
+            content: attr(data-heading) ": "; /* Adding colon after each heading */
+            font-weight: bold; /* Making the heading bold */
+            color: green; /* Setting the color of the heading */
+        }
+        .result-container {
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5); /* Adding shadow effect to the result container */
+            padding: 20px; /* Adding some padding for better readability */
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <span> <%= docname %></span>
+        <div class="header-right">
+            <a href="#" class="underline-hover waves-effect waves-light btn" id="searchMedicineBtn">Search Medicine</a>
+            <a href="#" class="underline-hover waves-effect waves-light btn" id="newPatientBtn">New Patient</a>
+            <a href="#" class="underline-hover waves-effect waves-light btn" id="existingPatientBtn">Existing Patient</a>
+            <a href="#" class="underline-hover waves-effect waves-light btn" id="logoutBtn">Logout</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Content will be loaded dynamically here -->
+        <div class="container">
+            <h1 class="center-align">Medicine Search</h1>
+            <form action="/search" method="POST">
+                <label for="searchQuery"></label>
+                <input type="text" id="searchQuery" name="searchQuery" list="suggestions" placeholder="Enter medicine name...">
+                <datalist id="suggestions"></datalist>
+                <button type="submit" class="btn waves-effect waves-light"  style="width: 200px;">Search</button>
+            </form>
+            <div class="wave-divider"></div>
+            <div class="result-container">
+                <% if (result1) { %>
+                <h2 class="center-align">Search Result</h2>
+                <ul>
+                    <li>ID:- <%= result1.id %></li>
+                    <li>Name:- <%= result1.name %></li>
+                    <li>Price:- <%= result1.price %></li>
+                    <li>Manufacturer Name:- <%= result1.manufacturer_name %></li>
+                    <li>Type:- <%= result1.type %></li>
+                    <li>Pack Size Label:- <%= result1.pack_size_label %></li>
+                    <li>Short Composition 1:- <%= result1.short_composition1 %></li>
+                    <li>Short Composition 2:- <%= result1.short_composition2 %></li>
+                </ul>
+                <% } else { %>
+                <p class="no-result">No medicine found with the given name.</p>
+                <% } %>
+            </div>
+        </div>
+    </main>
+>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        const searchQueryInput = document.getElementById('searchQuery');
+        const suggestionsList = document.getElementById('suggestions');
+
+        searchQueryInput.addEventListener('input', async function () {
+            const inputText = searchQueryInput.value.trim();
+            suggestionsList.innerHTML = ''; // Clear previous suggestions
+
+            if (inputText.length >= 2) { // Minimum characters required for suggestions
+                try {
+                    const response = await fetch(`/suggestions?input=${inputText}`);
+                    const suggestions = await response.json();
+
+                    suggestions.forEach(suggestion => {
+                        const option = document.createElement('option');
+                        option.value = suggestion;
+                        suggestionsList.appendChild(option);
+                    });
+                } catch (error) {
+                    console.error('Error fetching suggestions:', error);
+                }
+            }
+        });
+        function redirectTo(route) {
+            window.location.href = route;
+        }
+    
+        // Add click event listeners to the buttons
+        document.getElementById("searchMedicineBtn").addEventListener("click", function() {
+            redirectTo("/home");
+        });
+    
+        document.getElementById("newPatientBtn").addEventListener("click", function() {
+            redirectTo("/submit_enrollment");
+        });
+    
+        document.getElementById("existingPatientBtn").addEventListener("click", function() {
+            redirectTo("/ex_patient");
+        });
+    
+        document.getElementById("logoutBtn").addEventListener("click", function() {
+            // For logout, since it's a form submission with POST method, we need to manually submit it via JavaScript
+            var form = document.createElement("form");
+            form.setAttribute("action", "/logout?_method=DELETE");
+            form.setAttribute("method", "POST");
+            document.body.appendChild(form);
+            form.submit();
+        });
+    </script>
+</body>
+</html>

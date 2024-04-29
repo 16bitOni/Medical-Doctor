@@ -1,0 +1,21 @@
+header {
+    background-color: #26a69a; /* Teal color */
+    padding: 10px 0;
+}
+header span {
+    color: #ffffff; /* White color */
+    font-size: 24px;
+    font-weight: bold;
+    margin-left: 20px;
+}
+.header-right {
+    float: right;
+    margin-right: 20px;
+}
+.underline-hover {
+    text-decoration: none;
+    color: #ffffff; /* White color */
+}
+.underline-hover:hover {
+    background-color: #00796b; /* Darker teal color on hover */
+}

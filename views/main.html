@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login/Signup Page</title>
+  <!-- Materialize CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-image: url('form_bkgnd.svg');
+      background-size: cover;
+    }
+    .card {
+      width: 400px;
+      padding: 30px;
+      background-color: rgb(255, 255, 255);
+      border-radius: 10px;
+    }
+    .card-content {
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <ul class="tabs tabs-fixed-width">
+      <li class="tab col s6"><a href="#login">Login</a></li>
+      <li class="tab col s6"><a href="#signup">Signup</a></li>
+    </ul>
+    <div id="login" class="col s12">
+      <div class="card-content">
+        <div class="input-field">
+          <input id="login-email" type="email" class="validate">
+          <label for="login-email">Email</label>
+        </div>
+        <div class="input-field">
+          <input id="login-password" type="password" class="validate">
+          <label for="login-password">Password</label>
+        </div>
+        <a href="#" class="waves-effect waves-light btn">Login</a>
+        <p>Don't have an account? <a href="#signup">Sign up</a></p>
+      </div>
+    </div>
+    <div id="signup" class="col s12">
+      <div class="card-content">
+        <div class="input-field">
+          <input id="signup-name" type="text" class="validate">
+          <label for="signup-name">Name</label>
+        </div>
+        <div class="input-field">
+          <input id="signup-email" type="email" class="validate">
+          <label for="signup-email">Email</label>
+        </div>
+        <div class="input-field">
+          <input id="signup-password" type="password" class="validate">
+          <label for="signup-password">Password</label>
+        </div>
+        <div class="input-field">
+          <input id="signup-confirm-password" type="password" class="validate">
+          <label for="signup-confirm-password">Confirm Password</label>
+        </div>
+        <a href="#" class="waves-effect waves-light btn">Sign up</a>
+        <p>Already have an account? <a href="#login">Login</a></p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Materialize JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var tabs = document.querySelectorAll('.tabs');
+      var instances = M.Tabs.init(tabs);
+    });
+
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Function to handle login form submission
+      const handleLogin = async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.text();
+        if (response.ok) {
+          window.location.href = "/home"; // Redirect to home page
+        } else {
+          alert(data); // Display error message
+        }
+      };
+
+      // Function to handle signup form submission
+      const handleSignup = async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('signup-name').value;
+        const email = document.getElementById('signup-email').value;
+        const password = document.getElementById('signup-password').value;
+        const confirmPassword = document.getElementById('signup-confirm-password').value;
+
+        if (password !== confirmPassword) {
+          alert("Passwords do not match");
+          return;
+        }
+
+        const response = await fetch('/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ name, email, password })
+        });
+
+        const data = await response.text();
+        if (response.ok) {
+          window.location.href = "/"; // Redirect to login page
+        } else {
+          alert(data); // Display error message
+        }
+      };
+
+      // Attach event listeners to form submit buttons
+      document.getElementById('login').addEventListener('submit', handleLogin);
+      document.getElementById('signup').addEventListener('submit', handleSignup);
+    });
+  </script>
+</body>
+</html>

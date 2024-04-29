@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>
+        body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background-color: #89CFF3; /* Light blue background color */
+}
+
+
+
+main {
+    display: flex;
+    justify-content: space-between;
+    height: calc(100% - 120px);
+    background-color: #E6FFFD; /* Light blue main background color */
+}
+
+.left {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.right {
+    flex: 2;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1000px;
+    background-color: #CDF5FD; /* Light blue container background color */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-container {
+    flex: 1;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+
+.form {
+    display: grid;
+    grid-template-columns: auto 1fr; /* Change the order to place text input and button on the left */
+    gap: 15px;
+}
+
+.form input[type="text"] {
+    grid-column: 1; /* Ensure the text input occupies the first column */
+   width: 500px;
+}
+
+.form button {
+    grid-column: 2; /* Ensure the button occupies the second column */
+    max-width: 200px;
+}
+
+.input-group {
+    display: grid;
+
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    margin-bottom: 5px;
+}
+
+.input-group input[type="text"],
+.input-group select,
+.input-group input[type="number"],
+.input-group textarea {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+.med-name{
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+
+}
+.add-medicine-button,
+.load-medicine-button,
+.submit-button {
+    padding: 12px 24px;
+    background-color: #00A9FF; /* Dark blue button background color */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.add-medicine-button:hover,
+.submit-button:hover {
+    background-color: #007bff; /* Light blue button hover background color */
+}
+
+.submit-button {
+    background-color: #dc3545; /* Red submit button color */
+}
+
+.submit-button:hover {
+    background-color: #c82333; /* Dark red submit button hover color */
+}
+
+.table-container {
+    margin-top: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #f0f0f0;
+}
+
+table,
+th,
+td {
+    border: 1px solid #ddd;
+}
+
+th,
+td {
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #b5e48c;
+}
+
+.card {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card h2 {
+    color: #00A9FF; /* Dark blue card heading color */
+}
+.patient-form{
+
+display: flex;
+text-align: center;
+flex-direction: column;
+row-gap: 15px;
+} 
+.patient-form label{
+font-weight: bold;
+color:  #00A9FF;
+}
+.patient-form input
+
+{
+padding: 8px;
+border-radius: 5px;
+border: 1px solid #ccc;
+outline: none;
+
+}
+.load-patient-data{
+padding: 12px 24px;
+background-color: #cc4552; /* Dark blue button background color */
+color: #fff;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-size: 16px;
+transition: background-color 0.3s ease;
+}
+.load-patient-data:hover{
+background-color: #c82333;
+}
+header {
+            background-color: #26a69a; /* Teal color */
+            padding: 10px 0;
+        }
+        header span {
+            color: #ffffff; /* White color */
+            font-size: 24px;
+            font-weight: bold;
+            margin-left: 20px;
+        }
+        .header-right {
+            float: right;
+            margin-right: 20px;
+        }
+        .underline-hover {
+            text-decoration: none;
+            color: #ffffff; /* White color */
+        }
+        .underline-hover:hover {
+            background-color: #00796b; /* Darker teal color on hover */
+        }
+
+
+    </style>
+</head>
+<body >
+
+    <header>
+        <span> <%= docname %></span>
+        <div class="header-right">
+            <a href="#" class="underline-hover waves-effect waves-light btn" id="searchMedicineBtn">Search Medicine</a>
+            <a href="#" class="underline-hover waves-effect waves-light btn" id="newPatientBtn">New Patient</a>
+            <a href="#" class="underline-hover waves-effect waves-light btn" id="existingPatientBtn">Existing Patient</a>
+            <a href="#" class="underline-hover waves-effect waves-light btn" id="logoutBtn">Logout</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="left">
+            <div class="card">
+                <form  class="patient-form" id="patient-form">
+                    <label for="patientQuery">Enter Patient Adhar No</label>
+                    <input type="text" id="patientQuery" name="patientQuery" class="patient-data" placeholder="Adhar NO ...">
+                    <button type="submit" class="load-patient-data" onclick="">Submit</button>
+                </form>
+                <div id="patient-info-container" >
+                    <h3>Patient Details:</h3>
+                    <ul>
+                        <li>First Name: <span id="firstNamePlaceholder"></span></li>
+                        <li>Last Name: <span id="lastNamePlaceholder"></span></li>
+                        <li>Date of Birth: <span id="dobPlaceholder"></span></li>
+                        <li>Sex: <span id="sexPlaceholder"></span></li>
+                        <li>Height: <span id="heightPlaceholder"></span> cm</li>
+                        <li>Weight: <span id="weightPlaceholder"></span> kg</li>
+                        <li>Marital Status: <span id="maritalStatusPlaceholder"></span></li>
+                        <li>Contact Number: <span id="contactNumberPlaceholder"></span></li>
+                        <li>Email: <span id="emailPlaceholder"></span></li>
+                        <li>Emergency Number: <span id="emergencyNumberPlaceholder"></span></li>
+                        <li>Adhar Number: <span id="adharNoPlaceholder"></span></li>
+                    </ul>
+                </div>
+                 
+            </div>
+            <div class="card-container"> </div>
+        </div>
+        <div class="right">
+            <div class="container">
+                <div class="form-container">
+                    <h1>Prescription Form</h1>
+                    <form id="prescriptionForm" class="prescriptionForm">
+                        <label for="searchQuery"></label>
+                        <input type="text" id="searchQuery" name="searchQuery" class="med-name" list="suggestions" placeholder="Enter medicine name...">
+                        <datalist id="suggestions"></datalist>
+                        <button type="submit" class="load-medicine-button">Load Medicine</button>
+                    </form>
+                    <div class="input-group">
+                        <br>
+                        <label for="id">ID:</label>
+                        <input type="number" id="id" placeholder="ID">
+                        <br>
+                        <label for="medicineName">Medicine:</label>
+                        <input type="text" id="medicineName" placeholder="Medicine Name">
+                        <br>
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" id="quantity" placeholder="Quantity">
+                    </div>
+                    
+                    <!-- <div class="input-group">
+                        <br>
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" id="quantity" value="1">
+                    </div>  -->
+                </div>
+                <div class="additional-section">
+                    <input type="button" value="Add Medicine" onclick="addMedicine()" class="add-medicine-button">
+                    <div class="table-container">
+                        <table id="medicineTable">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>ID Number</th>
+                                    <th>Medicine Name</th>
+                                    <th>Quantity</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody id="medicineTableBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="input-group">
+                        <label for="review">Review:</label>
+                        <textarea id="review" rows="4" cols="50"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label for="medicalRequirements">Medical Requirements:</label>
+                        <textarea id="medicalRequirements" rows="4" cols="50"></textarea>
+                    </div>
+                    <div class="input-group center">
+                        <input type="submit" value="Submit" class="submit-button" id="submitButton" >
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+
+function redirectTo(route) {
+        window.location.href = route;
+    }
+
+    // Add click event listeners to the buttons
+    document.getElementById("searchMedicineBtn").addEventListener("click", function() {
+        redirectTo("/home");
+    });
+
+    document.getElementById("newPatientBtn").addEventListener("click", function() {
+        redirectTo("/submit_enrollment");
+    });
+
+    document.getElementById("existingPatientBtn").addEventListener("click", function() {
+        redirectTo("/ex_patient");
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", function() {
+        // For logout, since it's a form submission with POST method, we need to manually submit it via JavaScript
+        var form = document.createElement("form");
+        form.setAttribute("action", "/logout?_method=DELETE");
+        form.setAttribute("method", "POST");
+        document.body.appendChild(form);
+        form.submit();
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    const searchQueryInput = document.getElementById('searchQuery');
+    const suggestionsList = document.getElementById('suggestions');
+    let adharnumber;
+
+    searchQueryInput.addEventListener('input', async function() {
+        const inputText = searchQueryInput.value.trim();
+        suggestionsList.innerHTML = ''; // Clear previous suggestions
+
+        if (inputText.length >= 2) { // Minimum characters required for suggestions
+            try {
+                const response = await fetch(`/suggestions?input=${inputText}`);
+                const suggestions = await response.json();
+
+                suggestions.forEach(suggestion => {
+                    const option = document.createElement('option');
+                    option.value = suggestion;
+                    suggestionsList.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching suggestions:', error);
+            }
+        }
+    });
+// Define a global variable to track the row number
+var rowNum = 0;
+
+// Define a global array to store added medicines
+var addedMedicines = [];
+
+// Function to initialize added medicines array from localStorage
+function initializeAddedMedicines() {
+    var storedData = localStorage.getItem('addedMedicines');
+    if (storedData) {
+        addedMedicines = JSON.parse(storedData);
+        renderMedicineTable();
+    }
+}
+
+// Call the initialization function when the page loads
+initializeAddedMedicines();
+
+function addMedicine() {
+        // Check if patient details are fetched
+        if (!showWarningIfPatientDetailsNotFetched()) {
+        return;
+    }
+    var medicineName = document.getElementById('medicineName').value;
+    var id = document.getElementById('id').value;
+    var quantity = document.getElementById('quantity').value;
+
+    // Push the new medicine data to the array
+    addedMedicines.push({ id: id, medicineName: medicineName, quantity: quantity });
+
+    // Update the table display
+    renderMedicineTable();
+
+    // Save added medicines to localStorage
+    saveAddedMedicines();
+
+    // Clear form fields
+    document.getElementById('searchQuery').value = '';
+    document.getElementById('id').value = '';
+    document.getElementById('medicineName').value = '';
+    document.getElementById('quantity').value = '';
+
+    // Increment the row number
+    rowNum++;
+}
+
+function renderMedicineTable() {
+    var tableBody = document.getElementById('medicineTableBody');
+    tableBody.innerHTML = ''; // Clear previous table data
+
+    // Loop through the added medicines array and populate the table
+    addedMedicines.forEach(function(medicine, index) {
+        var newRow = tableBody.insertRow();
+        var cell1 = newRow.insertCell(0);
+        var cell2 = newRow.insertCell(1);
+        var cell3 = newRow.insertCell(2);
+        var cell4 = newRow.insertCell(3);
+        var cell5 = newRow.insertCell(4);
+
+        cell1.innerHTML = (index + 1);
+        cell2.innerHTML = medicine.id;
+        cell3.innerHTML = medicine.medicineName;
+        cell4.innerHTML = medicine.quantity;
+
+        cell5.innerHTML = '<button onclick="editRow(this)">Edit</button> <button onclick="deleteRow(this)">Delete</button>';
+    });
+}
+
+
+// Function to save added medicines to localStorage
+function saveAddedMedicines() {
+    localStorage.setItem('addedMedicines', JSON.stringify(addedMedicines));
+}
+
+
+function editRow(button) {
+    var row = button.parentNode.parentNode;
+    var cells = row.getElementsByTagName('td');
+
+    var medicineId = cells[1].innerHTML;
+    var medicineName = cells[2].innerHTML;
+    var quantity = cells[3].innerHTML;
+
+    // Populate the form fields with the medicine details for editing
+    document.getElementById('id').value = medicineId;
+    document.getElementById('medicineName').value = medicineName;
+    document.getElementById('quantity').value = quantity;
+
+    // Remove the medicine from the addedMedicines array
+    addedMedicines = addedMedicines.filter(function(medicine) {
+        return medicine.id !== medicineId;
+    });
+
+    // Update the table display
+    renderMedicineTable();
+
+    // Save the updated addedMedicines array to localStorage
+    saveAddedMedicines();
+}
+
+function deleteRow(button) {
+    var row = button.parentNode.parentNode;
+    var cells = row.getElementsByTagName('td');
+
+    var medicineId = cells[1].innerHTML;
+
+    // Remove the medicine from the addedMedicines array
+    addedMedicines = addedMedicines.filter(function(medicine) {
+        return medicine.id !== medicineId;
+    });
+
+    // Update the table display
+    renderMedicineTable();
+
+    // Save the updated addedMedicines array to localStorage
+    saveAddedMedicines();
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Variable to track whether patient details are fetched
+let patientDetailsFetched = false;
+
+// Function to check if patient details are fetched
+function isPatientDetailsFetched() {
+    return patientDetailsFetched;
+}
+
+// Function to show warning if patient details are not fetched
+function showWarningIfPatientDetailsNotFetched() {
+    if (!isPatientDetailsFetched()) {
+        alert("Please fetch patient details first.");
+        return false;
+    }
+    return true;
+}
+
+
+  
+ function getPatientInfo(patientQuery) {
+  fetch(`/pinfo?patientQuery=${patientQuery}`, { // Include the query parameter in the URL
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.message === 'Server Error') {
+      console.error('Error fetching patient data:', data.message);
+      return;
+    }
+    console.log('Patient data:', data); // Log for debugging
+    displayPatientInfo(data.data);
+    patientDetailsFetched = true;
+  })
+  .catch(error => {
+    console.error('Error fetching patient data:', error);
+  });
+}
+/////////////////////////////////////////////////////////////////////
+function getPrescriptionInfo(patientQuery) {
+  fetch(`/prinfo?patientQuery=${patientQuery}`, { // Include the query parameter in the URL
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => response.json())
+  .then(data2 => {
+    if (data2.message === 'Server Error') {
+      console.error('Error fetching patient data:', data2.message);
+      return;
+    }
+    console.log('Patient data:', data2); // Log for debugging
+    createCard(data2.data2);
+    patientDetailsFetched = true;
+  })
+  .catch(error => {
+    console.error('Error fetching patient data:', error);
+  });
+}
+
+
+const patientForm = document.getElementById('patient-form');
+patientForm.addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const patientQueryInput = document.getElementById('patientQuery');
+  const patientQuery = patientQueryInput.value;
+
+  getPatientInfo(patientQuery);
+  getPrescriptionInfo(patientQuery);
+});
+// Function to create a card for a patient
+function createCard(patient) {
+    // Iterate through each prescription in the patient data
+    patient.forEach(prescription => {
+        // Extract data from the prescription object
+        const name = prescription.name;
+        const adharNo = prescription.adharnum;
+        const review = prescription.review;
+        const medicalRequirements = prescription.medicalRequirements;
+        const medicines = prescription.medicines;
+        const createdAt = new Date(prescription.createdAt).toLocaleString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true });
+        // Create HTML for medicines table
+        let medicinesTable = `
+            <table class="medicines-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Medicine Name</th>
+                        <th>ID</th>
+                        <th>Quantity</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+        medicines.forEach(medicine => {
+            // Extract data from each medicine object
+            const medicineName = medicine.medicineName;
+            const rank = medicine.rank;
+            const quantity = medicine.quantity;
+            const ID = medicine.id; // Assuming dosage is present in the medicine object
+
+            // Append medicine information to the medicines table
+            medicinesTable += `
+                <tr>
+                    <td>${rank}</td>
+                    <td>${medicineName}</td>
+                    <td>${ID}</td>
+                    <td>${quantity}</td>
+                    
+                </tr>
+            `;
+        });
+        medicinesTable += `
+                </tbody>
+            </table>
+        `;
+
+        // Create HTML for the card
+        const cardContainer = document.querySelector('.left .card-container');
+        const newCard = document.createElement('div');
+        newCard.classList.add('card');
+        newCard.innerHTML = `
+            <p>Review: ${review}</p>
+            <p>Medical Requirements: ${medicalRequirements}</p>
+            <h4>Prescribed Medicines:</h4>
+            ${medicinesTable}
+            <p>Created At: ${createdAt}</p>
+        `;
+
+        // Append the new card to the card container
+        cardContainer.appendChild(newCard);
+    });
+}
+
+
+
+function displayPatientInfo(data) {
+    document.getElementById('firstNamePlaceholder').textContent = data.FirstName;
+    document.getElementById('lastNamePlaceholder').textContent = data.lastName;
+    document.getElementById('dobPlaceholder').textContent = data.DOB;
+    document.getElementById('sexPlaceholder').textContent = data.Sex;
+    document.getElementById('heightPlaceholder').textContent = data.Height;
+    document.getElementById('weightPlaceholder').textContent = data.Weight;
+    document.getElementById('maritalStatusPlaceholder').textContent = data.MaritialStatus;
+    document.getElementById('contactNumberPlaceholder').textContent = data.ContactNumber;
+    document.getElementById('emailPlaceholder').textContent = data.Email;
+    document.getElementById('emergencyNumberPlaceholder').textContent = data.EmergencyNumber;
+    document.getElementById('adharNoPlaceholder').textContent = data.AdharNo;
+    adharnumber = data.AdharNo;
+    // Show the patient info container
+    document.getElementById('patient-info-container').style.display = 'block';
+}
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+const searchForm = document.getElementById('prescriptionForm');
+searchForm.addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const searchQueryInput = document.getElementById('searchQuery');
+  const searchQuery = searchQueryInput.value; // Fix the variable name here
+
+    // Check if patient details are fetched
+    if (!showWarningIfPatientDetailsNotFetched()) {
+        return;
+    }
+  getMedInfo(searchQuery);
+});
+
+function getMedInfo(searchQuery) {
+    fetch('/search_2', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ searchQuery: searchQuery }) // Pass searchQuery in the body
+})
+
+  .then(response => response.json())
+  .then(result => {
+    document.getElementById('id').value = result.result.id || 'ID';
+    document.getElementById('medicineName').value = result.result.name || 'Medicine Name';
+    
+    
+  })
+  .catch(error => {
+    console.error('Error fetching patient data:', error);
+  });
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    function displaySubmittedData() {
+        // Extract data from the medicine table
+
+
+        if (!showWarningIfPatientDetailsNotFetched()) {
+        return;
+    }
+        const medicineRows = document.querySelectorAll('#medicineTableBody tr');
+        const medicinesData = Array.from(medicineRows).map(row => ({
+            rank: row.cells[0].textContent,
+            id: row.cells[1].textContent.replace('ID ', ''),
+            medicineName: row.cells[2].textContent,
+            quantity: row.cells[3].textContent
+        }));
+
+        // Retrieve data from other form fields
+        const review = document.getElementById("review").value;
+        const medicalRequirements = document.getElementById("medicalRequirements").value;
+        const adharnum =  document.getElementById('adharNoPlaceholder').textContent;
+        const firstname = document.getElementById('firstNamePlaceholder').textContent ;
+        const lastname = document.getElementById('lastNamePlaceholder').textContent ;
+        const name = firstname+ " "+ lastname;
+  
+
+
+        // Prepare data to send to the server
+        const presdata = {
+            adharnum,
+            name,
+            medicines: medicinesData,
+            review,
+            medicalRequirements,
+        };
+
+        // Send data to the server using fetch API
+        fetch('/prescriptions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(presdata)
+        })
+        .then(response => {
+            if (response.ok) {
+                alert("Prescription submitted successfully!");
+            } else {
+                alert("Failed to submit prescription.");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("An error occurred while submitting the prescription.");
+        });
+    }
+
+    // You can attach event listeners here or use event delegation for better performance
+    document.getElementById("submitButton").addEventListener("click", displaySubmittedData);
+
+
+
+</script>
+</body>
+</html>

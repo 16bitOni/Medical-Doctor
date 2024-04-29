@@ -1,0 +1,17 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('form_bkgnd.svg');
+    background-size: cover;
+  }
+  .card {
+    width: 400px;
+    padding: 30px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+  }
+  .card-content {
+    padding: 0;
+  }
