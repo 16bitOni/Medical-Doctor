@@ -320,7 +320,7 @@ header {
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script>
-
+  
 function redirectTo(route) {
         window.location.href = route;
     }
@@ -657,7 +657,7 @@ function displayPatientInfo(data) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+var pricedata;
 
 
 const searchForm = document.getElementById('prescriptionForm');
@@ -687,6 +687,7 @@ function getMedInfo(searchQuery) {
   .then(result => {
     document.getElementById('id').value = result.result.id || 'ID';
     document.getElementById('medicineName').value = result.result.name || 'Medicine Name';
+    pricedata = result.result.price;
     
     
   })
@@ -710,7 +711,8 @@ function getMedInfo(searchQuery) {
             rank: row.cells[0].textContent,
             id: row.cells[1].textContent.replace('ID ', ''),
             medicineName: row.cells[2].textContent,
-            quantity: row.cells[3].textContent
+            quantity: row.cells[3].textContent,
+            price:pricedata,
         }));
 
         // Retrieve data from other form fields

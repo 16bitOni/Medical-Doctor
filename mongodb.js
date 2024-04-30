@@ -55,7 +55,9 @@ const prescriptionSchema = new mongoose.Schema({
         rank:String,
         id:String,
         medicineName:String,
-        quantity:String
+        quantity:String,
+        price:Number,
+        
       }],
       review:String,
       medicalRequirements:String,
