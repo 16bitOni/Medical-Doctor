@@ -578,6 +578,7 @@ function createCard(patient) {
         const medicalRequirements = prescription.medicalRequirements;
         const medicines = prescription.medicines;
         const createdAt = new Date(prescription.createdAt).toLocaleString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true });
+        const docname = prescription.docname;
         // Create HTML for medicines table
         let medicinesTable = `
             <table class="medicines-table">
@@ -620,6 +621,7 @@ function createCard(patient) {
         const newCard = document.createElement('div');
         newCard.classList.add('card');
         newCard.innerHTML = `
+            <h6 style="font-weight: bold;">Prescribed By: ${docname}</h6>
             <p>Review: ${review}</p>
             <p>Medical Requirements: ${medicalRequirements}</p>
             <h4>Prescribed Medicines:</h4>
@@ -728,6 +730,7 @@ function getMedInfo(searchQuery) {
             medicines: medicinesData,
             review,
             medicalRequirements,
+           
         };
 
         // Send data to the server using fetch API

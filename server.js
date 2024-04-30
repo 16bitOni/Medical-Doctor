@@ -303,6 +303,7 @@ app.post('/prescriptions', async (req, res) => {
         medicines,
         review,
         medicalRequirements,
+        docname,
       });
   
       // Save the new prescription to the database
